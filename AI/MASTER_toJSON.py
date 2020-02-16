@@ -37,7 +37,7 @@ MASTER_dict = {}
 #
 
 counties = [f"{i:03}" for i in range(1, 199, 2)]
-years = [str(i) for i in range(1989, 2020)]
+years = [str(i) for i in range(1991, 2020)]
 months = [f"{i:02}" for i in range(1, 13)]
 
 #-----------#
@@ -51,20 +51,26 @@ for countyID in counties:
 
             try:
                 inputData = ClimateNOAA_dict[countyID][year][month]
+            except KeyError:
+                print(datapointID + " discarded, not found in IndemnClimateNOAA_dictifiedUSDA_dict")
 
+            try:
                 indemnifiedAcres = IndemnifiedUSDA_dict[countyID][year][month][0]
                 totalAcres = IndemnifiedUSDA_dict[countyID][year][month][1]
                 severity = round(indemnifiedAcres / totalAcres, 2)
+            except KeyError:
+                print(datapointID + " discarded, not found in IndemnifiedUSDA_dict")
 
+            try:
                 indemnifiedPolicies = OverallUSDA_dict[countyID][year][0]
                 totalPolicies = OverallUSDA_dict[countyID][year][1]
                 frequency = round(indemnifiedPolicies / totalPolicies, 2)
-
-                outputData = [severity, frequency]
-
-                MASTER_dict[datapointID] = [inputData, outputData]
             except KeyError:
-                print(datapointID)
+                print(datapointID + " discarded, not found in OverallUSDA_dict")
+
+            outputData = [severity, frequency]
+
+            MASTER_dict[datapointID] = [inputData, outputData]
 
 with open(output_path, "w+") as outfile:
     dump(MASTER_dict, outfile)
