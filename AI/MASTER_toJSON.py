@@ -17,8 +17,8 @@ output_path = "/Users/forrestbicker/Documents/Code/Python/WorkInProgress/MTF/dat
 # Setup #
 #-------#
 climateNOAA_dict = load(climateNOAA_path)
-OverallUSDA_dict = load(OverallUSDA_path)
 IndemnifiedUSDA_dict = load(IndemnifiedUSDA_path)
+OverallUSDA_dict = load(OverallUSDA_path)
 
 MASTER_dict = {}
 # final JSON to be in the following form
@@ -31,6 +31,20 @@ MASTER_dict = {}
 #   }
 #
 
+#-----------#
+# Execution #
+#-----------#
+
+for countyID in OverallUSDA_dict:
+    for year in OverallUSDA_dict[countyID]:
+        for month in OverallUSDA_dict[countyID][year]:
+            datapointID = countyID + year + month
+
+            inputData = climateNOAA_dict[countyID][year][month]
+
+            outputData = [] # temp dummy
+
+            MASTER_dict[datapointID] = [inputData, outputData]
 
 with open(output_path, "w+") as outfile:
     dump(MASTER_dict, outfile)
