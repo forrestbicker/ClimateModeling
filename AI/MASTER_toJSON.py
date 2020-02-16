@@ -40,44 +40,59 @@ counties = [f"{i:03}" for i in range(1, 199, 2)]
 years = [str(i) for i in range(1991, 2020)]
 months = [f"{i:02}" for i in range(1, 13)]
 
+#----------#
+# Function #
+#----------#
+def getData(countyID, year, month):
+    datapointID = f"{countyID}-{year}-{month}"
+
+    try:
+        inputData = ClimateNOAA_dict[countyID][year][month]
+    except KeyError:
+        print(datapointID + " discarded, not found in IndemnClimateNOAA_dictifiedUSDA_dict")
+
+    try:
+        indemnifiedAcres, totalAcres, _ = IndemnifiedUSDA_dict[countyID][year][month]
+
+        if totalAcres == 0:
+            raise KeyError
+        else:
+            severity = min(1, round(indemnifiedAcres / totalAcres, 2))
+
+    except KeyError:
+        print(datapointID + " discarded, not found in IndemnifiedUSDA_dict")
+
+    try:
+        indemnifiedPolicies = IndemnifiedUSDA_dict[countyID][year][month][2]
+    except KeyError:
+        indemnifiedPolicies = 0
+
+    try:
+        totalPolicies = OverallUSDA_dict[countyID][year][1]
+        frequency = round(indemnifiedPolicies / totalPolicies, 2)
+    except KeyError:
+        print(datapointID + " discarded, not found in OverallUSDA_dict")
+
+    try:
+        outputData = [severity, frequency]
+
+        return [datapointID, [inputData, outputData]]
+    except NameError:
+        pass
+
+
 #-----------#
 # Execution #
 #-----------#
-
 for countyID in counties:
     for year in years:
         for month in months:
-            datapointID = f"{countyID}-{year}-{month}"
-
             try:
-                inputData = ClimateNOAA_dict[countyID][year][month]
-            except KeyError:
-                print(datapointID + " discarded, not found in IndemnClimateNOAA_dictifiedUSDA_dict")
-
-            try:
-                indemnifiedAcres = IndemnifiedUSDA_dict[countyID][year][month][0]
-                totalAcres = IndemnifiedUSDA_dict[countyID][year][month][1]
-
-                if totalAcres == 0:
-                    raise KeyError
-                else:
-                    severity = round(indemnifiedAcres / totalAcres, 2)
-            except KeyError:
-                print(datapointID + " discarded, not found in IndemnifiedUSDA_dict")
-
-            try:
-                indemnifiedPolicies = OverallUSDA_dict[countyID][year][0]
-                totalPolicies = OverallUSDA_dict[countyID][year][1]
-                frequency = round(indemnifiedPolicies / totalPolicies, 2)
-            except KeyError:
-                print(datapointID + " discarded, not found in OverallUSDA_dict")
-
-            try:
-                outputData = [severity, frequency]
-
-                MASTER_dict[datapointID] = [inputData, outputData]
-            except NameError:
+                datapointID, dataset = getData(countyID, year, month)
+                MASTER_dict[datapointID] = dataset
+            except TypeError:
                 pass
+
 
 with open(output_path, "w+") as outfile:
     print("Compeleted with " + str(len(MASTER_dict)) + " entries!")
