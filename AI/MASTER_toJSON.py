@@ -45,19 +45,22 @@ for countyID in OverallUSDA_dict:
         for month in OverallUSDA_dict[countyID][year]:
             datapointID = countyID + year + str(month)
 
-            inputData = ClimateNOAA_dict[countyID][year][month]
+            try:
+                inputData = ClimateNOAA_dict[countyID][year][month]
 
-            indemnifiedAcres = IndemnifiedUSDA_dict[countyID][year][month][0]
-            totalAcres = IndemnifiedUSDA_dict[countyID][year][month][1]
-            severity = round(indemnifiedAcres / totalAcres, 2)
+                indemnifiedAcres = IndemnifiedUSDA_dict[countyID][year][month][0]
+                totalAcres = IndemnifiedUSDA_dict[countyID][year][month][1]
+                severity = round(indemnifiedAcres / totalAcres, 2)
 
-            indemnifiedPolicies = OverallUSDA_dict[countyID][year][0]
-            totalPolicies = OverallUSDA_dict[countyID][year][1]
-            frequency = round(indemnifiedPolicies / totalPolicies, 2)
+                indemnifiedPolicies = OverallUSDA_dict[countyID][year][0]
+                totalPolicies = OverallUSDA_dict[countyID][year][1]
+                frequency = round(indemnifiedPolicies / totalPolicies, 2)
 
-            outputData = [severity, frequency]
+                outputData = [severity, frequency]
 
-            MASTER_dict[datapointID] = [inputData, outputData]
+                MASTER_dict[datapointID] = [inputData, outputData]
+            except KeyError:
+                print(datapointID)
 
 with open(output_path, "w+") as outfile:
     dump(MASTER_dict, outfile)
