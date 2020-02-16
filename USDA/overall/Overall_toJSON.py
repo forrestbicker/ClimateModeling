@@ -2,8 +2,8 @@
 from collections import defaultdict
 from json import dump
 
-inpath = "/Users/forrestbicker/Documents/Code/Python/Garbage/MiniPrograms/MTF/insuranceData/overall/RAW/countyDataIOWA.txt"
-outpath = "/Users/forrestbicker/Documents/Code/Python/Garbage/MiniPrograms/MTF/insuranceData/overall/OUT/OverallInsuranceUSDAee.json"
+inpath = "/Users/forrestbicker/Documents/Code/Python/WorkInProgress/MTF/data/USDA/overall/RAW/countyDataIOWA.txt"
+outpath = "/Users/forrestbicker/Documents/Code/Python/WorkInProgress/MTF/data/USDA/overall/OUT/OverallInsuranceUSDA.json"
 
 # jsonDict[countyID][year][dataID]
 jsonDict = defaultdict(lambda: defaultdict(list))  
