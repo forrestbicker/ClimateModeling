@@ -2,9 +2,8 @@ import os
 import json
 from collections import defaultdict
 
-inpath = "/Users/forrestbicker/Documents/Code/Python/Garbage/MiniPrograms/MTF/NOAA/DOWNLOADS/"
-outbasepath = "/Users/forrestbicker/Documents/Code/Python/Garbage/MiniPrograms/MTF/NOAA/OUT/"
-outpath = os.path.join(outbasepath, "climateVariablesNOAA") + ".json"
+indir = "/Users/forrestbicker/Documents/Code/Python/WorkInProgress/MTF/data/NOAA/DOWNLOADS"
+outpath = "/Users/forrestbicker/Documents/Code/Python/WorkInProgress/MTF/data/NOAA/OUT/climateNOAA.json"
 
 # jsonDict[countyID][year][month][dataID]
 # dataID: 0 for tMax, 1 for tAvg, 2 for tMin, 3 for pcpt
@@ -116,7 +115,7 @@ for folderName in ["tMax", "tAvg", "tMin", "pcp"]:
     if folderName != ".DS_Store":
         print(folderName)
     # if folderName == "test":
-        path = os.path.join(inpath, folderName)
+        path = os.path.join(indir, folderName)
         for fileName in os.listdir(path):
             with open(os.path.join(path, fileName), "r") as f:
                 jsonData = json.load(f)
@@ -126,16 +125,16 @@ for folderName in ["tMax", "tAvg", "tMin", "pcp"]:
 
                 for timeString in jsonData["data"]:
                     year = timeString[0:4]
-                    if int(year) >= 1989:
+                    if int(year) >= 1991:
                         month = timeString[4:]
                         value = float(jsonData["data"][timeString]["value"])
                         jsonDict[countyID][year][month].append(value)
 
 
 # for countyID in jsonDict["17"]:
-#     outpath = os.path.join(outbasepath, countyID) + ".json"
+#     outpath = os.path.join(outpath, countyID) + ".json"
 #     with open(outpath, "w+") as outfile:
 #         json.dump(jsonDict["17"][countyID], outfile)
 
 with open(outpath, "w+") as outfile:
-    json.dump(jsonDict, outfile)
+    json.dump(jsonDict, outfile, indent="4")
