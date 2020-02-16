@@ -1,34 +1,32 @@
 import os
-import json
+from json import load
 from collections import defaultdict
 
-inpath = "/Users/forrestbicker/Documents/Code/Python/Garbage/MiniPrograms/MTF/NOAA/DOWNLOADS/"
-outbasepath = "/Users/forrestbicker/Documents/Code/Python/Garbage/MiniPrograms/MTF/NOAA/OUT_CSV/"
-jsonDict = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: defaultdict(list))))
+inpath = "/Users/forrestbicker/Documents/Code/Python/WorkInProgress/MTF/data/NOAA/OUT/climateNOAA.json"
+outdir = "/Users/forrestbicker/Documents/Code/Python/WorkInProgress/MTF/data/NOAA/OUT/"
 
+with open(inpath, "r") as infile:
+    climateNOAA_dict = load(infile)
 
-stateID = "17"
+for dataID, variableName in enumerate(["tMax", "tAvg", "tMin", "pcpt"]):
+    with open(outdir + variableName + ".csv", "w+") as outfile:
+        outfile.write("countyID,")
+        for year in climateNOAA_dict["001"]:
+            for month in climateNOAA_dict["001"][year]:
+                outfile.write(year + ",")
+        outfile.write("\n")
 
-for dataID, folderName in enumerate(["tMax", "tAvg", "tMin", "pcp"]):
-    if folderName != ".DS_Store":
-        print(folderName)
-    # if folderName == "test":
-        path = os.path.join(inpath, folderName)
-        for fileName in os.listdir(path):
-            with open(os.path.join(path, fileName), "r") as f:
-                jsonData = json.load(f)
-                countyID = jsonData["description"]["title"].split(",")[0]
+        outfile.write(",")
+        for year in climateNOAA_dict["001"]:
+            for month in climateNOAA_dict["001"][year]:
+                outfile.write(month + ",")
+        outfile.write("\n")
 
-                for timeString in jsonData["data"]:
-                    year = timeString[0:4]
-                    month = timeString[4:]
-                    value = jsonData["data"][timeString]["value"]
-                    jsonDict[stateID][countyID][year][month].append(value)
-
-    with open(outbasepath + str(dataID) + ".csv", "a+") as outfile:
-        for countyID in jsonDict["17"]:
-            for year in jsonDict["17"][countyID]:
-                for month in jsonDict["17"][countyID][year]:
-                    outfile.write(jsonDict["17"][countyID][year][month][dataID])
-                    outfile.write(", ")
+        for countyID in climateNOAA_dict:
+            outfile.write(countyID)
+            
+            for year in climateNOAA_dict[countyID]:
+                for month in climateNOAA_dict[countyID][year]:
+                    datapoint = str(climateNOAA_dict[countyID][year][month][dataID])
+                    outfile.write("," + datapoint)
             outfile.write("\n")
