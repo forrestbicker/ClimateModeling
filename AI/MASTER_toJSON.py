@@ -11,7 +11,7 @@ IndemnifiedUSDA_path = "/Users/forrestbicker/Documents/Code/Python/WorkInProgres
 #---------------------#
 # Specify output path #
 #---------------------#
-output_path = "/Users/forrestbicker/Documents/Code/Python/WorkInProgress/MTF/data/AI/OUT"
+output_path = "/Users/forrestbicker/Documents/Code/Python/WorkInProgress/MTF/data/AI/OUT/MASTER.json"
 
 #-------#
 # Setup #
