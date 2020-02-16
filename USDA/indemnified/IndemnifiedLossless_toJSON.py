@@ -3,15 +3,14 @@ from json import dump
 from os.path import isfile, join
 from os import listdir
 
-dataset = ""
-indir = "/Users/forrestbicker/Documents/Code/Python/Garbage/MiniPrograms/MTF/insuranceData/indemnified/RAW/"
-outfile = "/Users/forrestbicker/Documents/Code/Python/Garbage/MiniPrograms/MTF/insuranceData/indemnified/OUT/IndemnifiedInsuranceUSDA_Lossless.json"
+indir = "/Users/forrestbicker/Documents/Code/Python/WorkInProgress/MTF/data/USDA/indemnified/RAW/"
+outfile = "/Users/forrestbicker/Documents/Code/Python/WorkInProgress/MTF/data/USDA/indemnified/OUT/IndemnifiedInsuranceUSDA_Lossless.json"
 
 # jsonDict[countyID][year][month][dataID]
 jsonDict = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: defaultdict(list))))
 
 
-inpaths = [indir + f for f in listdir(indir)]
+inpaths = [indir + f for f in listdir(indir) if f[0] != "."]
 
 lossDict = {
     "Cold Wet Weather": 0,
@@ -27,6 +26,7 @@ lossDict = {
 
 for inpath in inpaths:
     print(inpath.split("/")[-1])
+
     with open(inpath, "r") as infile:
         lines = infile.readlines()
         for line in lines:
@@ -60,4 +60,4 @@ for county in jsonDict:
                 jsonDict[county][year][month][dataID] = n
 
 with open(outfile, "w+") as outfile:
-    dump(jsonDict, outfile)
+    dump(jsonDict, outfile, indent=4)
