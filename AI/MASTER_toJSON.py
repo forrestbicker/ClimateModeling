@@ -36,16 +36,18 @@ MASTER_dict = {}
 #   }
 #
 
+counties = [f"{i:03}" for i in range(1, 199, 2)]
+years = [str(i) for i in range(1989, 2020)]
 months = [f"{i:02}" for i in range(1, 13)]
 
 #-----------#
 # Execution #
 #-----------#
 
-for countyID in range(1, 199, 2):
-    for year in range(1989, 2020):
+for countyID in counties:
+    for year in years:
         for month in months:
-            datapointID = f"{countyID} + {year} + {month}"
+            datapointID = f"{countyID}-{year}-{month}"
 
             try:
                 inputData = ClimateNOAA_dict[countyID][year][month]
