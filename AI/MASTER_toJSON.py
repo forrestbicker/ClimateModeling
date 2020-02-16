@@ -6,7 +6,7 @@ import numpy as np
 #--------------A-------#
 ClimateNOAA_path = "/Users/forrestbicker/Documents/Code/Python/WorkInProgress/MTF/data/AI/RAW/ClimateVariablesNOAA.json"
 OverallUSDA_path = "/Users/forrestbicker/Documents/Code/Python/WorkInProgress/MTF/data/AI/RAW/OverallUSDA.json"
-IndemnifiedUSDA_path = "/Users/forrestbicker/Documents/Code/Python/WorkInProgress/MTF/data/AI/RAW/IndemnifiedUSDA.json"
+IndemnifiedUSDA_path = "/Users/forrestbicker/Documents/Code/Python/WorkInProgress/MTF/data/AI/RAW/IndemnifiedLosslessUSDA.json"
 
 #---------------------#
 # Specify output path #
@@ -57,7 +57,11 @@ for countyID in counties:
             try:
                 indemnifiedAcres = IndemnifiedUSDA_dict[countyID][year][month][0]
                 totalAcres = IndemnifiedUSDA_dict[countyID][year][month][1]
-                severity = round(indemnifiedAcres / totalAcres, 2)
+
+                if totalAcres == 0:
+                    raise KeyError
+                else:
+                    severity = round(indemnifiedAcres / totalAcres, 2)
             except KeyError:
                 print(datapointID + " discarded, not found in IndemnifiedUSDA_dict")
 
@@ -68,9 +72,13 @@ for countyID in counties:
             except KeyError:
                 print(datapointID + " discarded, not found in OverallUSDA_dict")
 
-            outputData = [severity, frequency]
+            try:
+                outputData = [severity, frequency]
 
-            MASTER_dict[datapointID] = [inputData, outputData]
+                MASTER_dict[datapointID] = [inputData, outputData]
+            except NameError:
+                pass
 
 with open(output_path, "w+") as outfile:
-    dump(MASTER_dict, outfile)
+    print("Compeleted with " + str(len(MASTER_dict)) + " entries!")
+    dump(MASTER_dict, outfile, indent=4)
