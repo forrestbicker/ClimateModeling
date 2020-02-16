@@ -6,6 +6,8 @@ inpath = "/Users/forrestbicker/Documents/Code/Python/Garbage/MiniPrograms/MTF/NO
 outbasepath = "/Users/forrestbicker/Documents/Code/Python/Garbage/MiniPrograms/MTF/NOAA/OUT/"
 outpath = os.path.join(outbasepath, "climateVariablesNOAA") + ".json"
 
+# jsonDict[countyID][year][month][dataID]
+# dataID: 0 for tMax, 1 for tAvg, 2 for tMin, 3 for pcpt
 jsonDict = defaultdict(lambda: defaultdict(lambda: defaultdict(list)))
 
 countyDict = {
