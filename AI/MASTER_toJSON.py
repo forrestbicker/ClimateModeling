@@ -28,13 +28,21 @@ with open(OverallUSDA_path, "r") as OverallUSDA_file:
 MASTER_dict = {}
 # final JSON to be in the following form
 #
-#   {
-#       "countyID-yyyy-mm": [
-#           [tMax, tAvg, tMin, pcpt],
-#           [severity, frequency],
-#       ]
-#   }
-#
+# {
+#     "countyID-yyyy-mm": [
+#         [
+#             tMax, 
+#             tAvg, 
+#             tMin, 
+#             pcpt
+#         ],
+#         [
+#             severity,
+#             frequency
+#         ],
+#     ]
+# }
+
 
 counties = [f"{i:03}" for i in range(1, 199, 2)]
 years = [str(i) for i in range(1991, 2020)]
@@ -68,7 +76,7 @@ def getData(countyID, year, month):
         indemnifiedPolicies = 0
 
     try:
-        totalPolicies = OverallUSDA_dict[countyID][year][1]
+        totalPolicies = OverallUSDA_dict[countyID][year][0]
         frequency = round(indemnifiedPolicies / totalPolicies, 2)
     except KeyError:
         print(datapointID + " discarded, not found in OverallUSDA_dict")

@@ -124,8 +124,8 @@ for row in rows:
 
     year = cols[0]
 
-    policiesSold = int(cols[4])
-    policiesIndemnified = int(cols[6])
+    totalPolicies = int(cols[4])
+    indemnifiedPolicies = int(cols[6])
     acres = int(float(cols[9]))
 
     if rawCountyID != "All Other Counties" and rawCountyID != "Unknown" and year != "2020":
@@ -133,11 +133,11 @@ for row in rows:
         countyID = countyDict[rawCountyID]
 
         if len(jsonDict[countyID][year]) == 0:
-            jsonDict[countyID][year] = [0, 0, 0]
+            jsonDict[countyID][year] = [0]
 
-        jsonDict[countyID][year][0] += policiesIndemnified
-        jsonDict[countyID][year][1] += policiesSold
-        jsonDict[countyID][year][2] += acres
+        # jsonDict[countyID][year][0] += indemnifiedPolicies
+        jsonDict[countyID][year][0] += totalPolicies
+        # jsonDict[countyID][year][2] += acres
 
 with open(outpath, "w+") as outfile:
     rows = outfile.readlines()
