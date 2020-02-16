@@ -65,7 +65,7 @@ def getData(countyID, year, month):
         if totalAcres == 0:
             raise KeyError
         else:
-            severity = min(1, round(indemnifiedAcres / totalAcres, 2))
+            severity = min(1, round(indemnifiedAcres / totalAcres, 4))
 
     except KeyError:
         print(datapointID + " discarded, not found in IndemnifiedUSDA_dict")
@@ -77,7 +77,7 @@ def getData(countyID, year, month):
 
     try:
         totalPolicies = OverallUSDA_dict[countyID][year][0]
-        frequency = round(indemnifiedPolicies / totalPolicies, 2)
+        frequency = round(indemnifiedPolicies / totalPolicies, 4)
     except KeyError:
         print(datapointID + " discarded, not found in OverallUSDA_dict")
 
