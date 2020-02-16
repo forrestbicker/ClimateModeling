@@ -42,7 +42,11 @@ for countyID in OverallUSDA_dict:
 
             inputData = climateNOAA_dict[countyID][year][month]
 
-            outputData = [] # temp dummy
+            lostAcres = IndemnifiedUSDA_dict[countyID][year][month][0]
+            totalAcres = IndemnifiedUSDA_dict[countyID][year][month][1]
+            severity = round(lostAcres / totalAcres, 2)
+
+            outputData = [severity]  # temp dummy
 
             MASTER_dict[datapointID] = [inputData, outputData]
 
