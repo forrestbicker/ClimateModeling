@@ -43,7 +43,7 @@ MASTER_dict = {}
 for countyID in OverallUSDA_dict:
     for year in OverallUSDA_dict[countyID]:
         for month in OverallUSDA_dict[countyID][year]:
-            datapointID = countyID + year + month
+            datapointID = countyID + year + str(month)
 
             inputData = ClimateNOAA_dict[countyID][year][month]
 
