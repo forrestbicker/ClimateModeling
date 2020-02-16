@@ -36,14 +36,16 @@ MASTER_dict = {}
 #   }
 #
 
+months = [f"{i:02}" for i in range(1, 13)]
+
 #-----------#
 # Execution #
 #-----------#
 
-for countyID in OverallUSDA_dict:
-    for year in OverallUSDA_dict[countyID]:
-        for month in OverallUSDA_dict[countyID][year]:
-            datapointID = countyID + year + str(month)
+for countyID in range(1, 199, 2):
+    for year in range(1989, 2020):
+        for month in months:
+            datapointID = f"{countyID} + {year} + {month}"
 
             try:
                 inputData = ClimateNOAA_dict[countyID][year][month]
