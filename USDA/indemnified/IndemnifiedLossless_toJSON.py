@@ -7,6 +7,7 @@ indir = "/Users/forrestbicker/Documents/Code/Python/WorkInProgress/MTF/data/USDA
 outfile = "/Users/forrestbicker/Documents/Code/Python/WorkInProgress/MTF/data/USDA/indemnified/OUT/IndemnifiedInsuranceUSDA_Lossless.json"
 
 # jsonDict[countyID][year][month][dataID]
+# DataID: 1 for lostAcres, 2 for plantedAcres, 3 for policitesIndemnified
 jsonDict = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: defaultdict(list))))
 
 
@@ -45,12 +46,14 @@ for inpath in inpaths:
 
                 plantedAcres = float(elements[18].strip())
                 lostAcres = float(elements[27].strip())
+                policiesIndemnified = int(elements[17].strip())
 
                 if len(jsonDict[county][year][month]) == 0:
-                    jsonDict[county][year][month] = [0, 0]
+                    jsonDict[county][year][month] = [0, 0, 0]
 
                 jsonDict[county][year][month][0] += lostAcres
                 jsonDict[county][year][month][1] += plantedAcres
+                jsonDict[county][year][month][2] += policiesIndemnified
 
 for county in jsonDict:
     for year in jsonDict[county]:
