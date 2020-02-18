@@ -4,7 +4,7 @@ from os.path import isfile, join
 from os import listdir
 
 indir = "/Users/forrestbicker/Documents/Code/Python/WorkInProgress/MTF/data/USDA/indemnified/RAW/"
-outfile = "/Users/forrestbicker/Documents/Code/Python/WorkInProgress/MTF/data/USDA/indemnified/OUT/IndemnifiedInsuranceUSDA_Lossless.json"
+outfile = "/Users/forrestbicker/Documents/Code/Python/WorkInProgress/MTF/data/USDA/indemnified/OUT/IndemnifiedUSDA_ESZTER.json"
 
 # jsonDict[countyID][year][month][dataID]
 # DataID: 1 for lostAcres, 2 for plantedAcres, 3 for policitesIndemnified
@@ -14,14 +14,22 @@ jsonDict = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: defaultdi
 inpaths = [indir + f for f in listdir(indir) if f[0] != "."]
 
 lossDict = {
-    "Cold Wet Weather": 0,
+    # # cold
+    # "Cold Wet Weather": 0,
+    # "Freeze": 3,
+    # "Frost": 4,
+    
+    # # wet
+    # "Excess Moisture/Precipitation/Rain": 2,
+
+    # # hot
+    # "Heat": 6,
+    # "Hot Wind": 7,
+
+    # dry
     "Drought": 1,
-    "Excess Moisture/Precipitation/Rain": 2,
-    "Freeze": 3,
-    "Frost": 4,
-    "Hail": 5,
-    "Heat": 6,
-    "Hot Wind": 7,
+
+    # # "Hail": 5,
 }
 
 
@@ -46,14 +54,19 @@ for inpath in inpaths:
 
                 plantedAcres = float(elements[18].strip())
                 lostAcres = float(elements[27].strip())
-                policiesIndemnified = int(elements[17].strip())
+                indemnifiedPolicies = int(elements[17].strip())
+                indemnity = float(elements[28].strip())
+                lossRatio = float(elements[29].strip())
 
                 if len(jsonDict[county][year][month]) == 0:
-                    jsonDict[county][year][month] = [0, 0, 0]
+                    jsonDict[county][year][month] = [0, 0, 0, 0, 0]
 
                 jsonDict[county][year][month][0] += lostAcres
                 jsonDict[county][year][month][1] += plantedAcres
-                jsonDict[county][year][month][2] += policiesIndemnified
+                jsonDict[county][year][month][2] += indemnifiedPolicies
+                jsonDict[county][year][month][3] += indemnity
+                jsonDict[county][year][month][4] += lossRatio
+
 
 for county in jsonDict:
     for year in jsonDict[county]:
