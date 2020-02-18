@@ -2,7 +2,7 @@ import os
 from json import load
 from collections import defaultdict
 
-inpath = "/Users/forrestbicker/Documents/Code/Python/WorkInProgress/MTF/data/NOAA/OUT/climateNOAA.json"
+inpath = "/Users/forrestbicker/Documents/Code/Python/WorkInProgress/MTF/data/NOAA/OUT/climateNOAA_ALL.json"
 outdir = "/Users/forrestbicker/Documents/Code/Python/WorkInProgress/MTF/data/NOAA/OUT/"
 
 with open(inpath, "r") as infile:
@@ -24,7 +24,7 @@ for dataID, variableName in enumerate(["tMax", "tAvg", "tMin", "pcpt"]):
 
         for countyID in climateNOAA_dict:
             outfile.write(countyID)
-            
+
             for year in climateNOAA_dict[countyID]:
                 for month in climateNOAA_dict[countyID][year]:
                     datapoint = str(climateNOAA_dict[countyID][year][month][dataID])

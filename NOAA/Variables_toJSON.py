@@ -3,7 +3,7 @@ import json
 from collections import defaultdict
 
 indir = "/Users/forrestbicker/Documents/Code/Python/WorkInProgress/MTF/data/NOAA/DOWNLOADS"
-outpath = "/Users/forrestbicker/Documents/Code/Python/WorkInProgress/MTF/data/NOAA/OUT/climateNOAA.json"
+outpath = "/Users/forrestbicker/Documents/Code/Python/WorkInProgress/MTF/data/NOAA/OUT/climateNOAA_ALL.json"
 
 # jsonDict[countyID][year][month][dataID]
 # dataID: 0 for tMax, 1 for tAvg, 2 for tMin, 3 for pcpt
@@ -125,7 +125,7 @@ for folderName in ["tMax", "tAvg", "tMin", "pcp"]:
 
                 for timeString in jsonData["data"]:
                     year = timeString[0:4]
-                    if int(year) >= 1991:
+                    if int(year) >= 0:
                         month = timeString[4:]
                         value = float(jsonData["data"][timeString]["value"])
                         jsonDict[countyID][year][month].append(value)
@@ -137,4 +137,4 @@ for folderName in ["tMax", "tAvg", "tMin", "pcp"]:
 #         json.dump(jsonDict["17"][countyID], outfile)
 
 with open(outpath, "w+") as outfile:
-    json.dump(jsonDict, outfile, indent="4")
+    json.dump(jsonDict, outfile, indent=4)
