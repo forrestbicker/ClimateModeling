@@ -68,7 +68,8 @@ def getData(countyID, year, month):
             severity = min(1, round(indemnifiedAcres / totalAcres, 4))
 
     except KeyError:
-        print(datapointID + " discarded, not found in IndemnifiedUSDA_dict")
+        # print(datapointID + " discarded, not found in IndemnifiedUSDA_dict")
+        severity = 0
 
     try:
         indemnifiedPolicies = IndemnifiedUSDA_dict[countyID][year][month][2]
