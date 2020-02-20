@@ -98,7 +98,8 @@ for countyID in counties:
         for month in months:
             try:
                 datapointID, dataset = getData(countyID, year, month)
-                MASTER_dict[datapointID] = dataset
+                if dataset[1][0] != 0:
+                    MASTER_dict[datapointID] = dataset
             except TypeError:
                 pass
 
