@@ -12,6 +12,7 @@ from hyperas.distributions import choice, uniform
 from json import load, dump
 from keras.activations import hard_sigmoid, linear, relu, sigmoid
 from keras.optimizers import adam
+import matplotlib.pyplot as plt
 
 
 def getData():
@@ -50,7 +51,7 @@ def getData():
 
     return((x_train, y_train, x_val, y_val))
 
-def getModel(x_train, y_train, x_val, y_val): 
+def getModel(x_train, y_train, x_val, y_val):
 
     # x_train = np.array([[0, 0], [0, 1], [1, 0], [1, 1]], "float32")
     # y_train = np.array([[0.5], [0.5], [0.5], [0.5]], "float32")
@@ -80,9 +81,10 @@ def getModel(x_train, y_train, x_val, y_val):
     model.compile(
         loss=mean_squared_error,
         optimizer=adam(10**-3),
+        metrics=["accuracy"]
     )
 
-    model.fit(
+    history = model.fit(
         x_train,
         y_train,
         epochs=2500,
@@ -90,11 +92,21 @@ def getModel(x_train, y_train, x_val, y_val):
         validation_data=(x_val, y_val)
     )
 
+    with open("history.json", "w+") as out_file:
+        out_dict = history.history
+        for metric in out_dict:
+            contents = out_dict[metric]
+            contents = np.array(contents).astype('float')
+            out_dict[metric] = list(contents)  # converts to JSON serializable list
+        dump(out_dict, out_file)
 
     return(model)
 
+print(getData()[-2])
+
 modle = getModel(*getData())
 out = modle.predict_proba(getData()[-2])
+
 modle.save("m.hdf5")
 
 print(out)

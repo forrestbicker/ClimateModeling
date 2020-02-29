@@ -3,7 +3,7 @@ import json
 from collections import defaultdict
 
 indir = "/Users/forrestbicker/Documents/Code/Python/WorkInProgress/MTF/data/NOAA/DOWNLOADS"
-outpath = "/Users/forrestbicker/Documents/Code/Python/WorkInProgress/MTF/data/NOAA/OUT/climateNOAA_ALL.json"
+outpath = "/Users/forrestbicker/Documents/Code/Python/WorkInProgress/MTF/data/NOAA/OUT/climateNOAA_ALL_Month-Specific.json"
 
 # jsonDict[countyID][year][month][dataID]
 # dataID: 0 for tMax, 1 for tAvg, 2 for tMin, 3 for pcpt
@@ -111,6 +111,21 @@ countyDict = {
     "Wright": "197",
 }
 
+monthDict = {
+    12: "Winter",
+    1: "Winter",
+    2: "Winter",
+    3: "Spring",
+    4: "Spring",
+    5: "Spring",
+    6: "Summer",
+    7: "Summer",
+    8: "Summer",
+    9: "Autum",
+    10: "Autum",
+    11: "Autum",
+}
+
 for folderName in ["tMax", "tAvg", "tMin", "pcp"]:
     if folderName != ".DS_Store":
         print(folderName)
@@ -127,8 +142,9 @@ for folderName in ["tMax", "tAvg", "tMin", "pcp"]:
                     year = timeString[0:4]
                     if int(year) >= 0:
                         month = timeString[4:]
+                        seasonID = monthDict[int(month)]
                         value = float(jsonData["data"][timeString]["value"])
-                        jsonDict[countyID][year][month].append(value)
+                        jsonDict[folderName][month][year].append(value)
 
 
 # for countyID in jsonDict["17"]:
