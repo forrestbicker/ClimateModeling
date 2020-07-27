@@ -137,7 +137,7 @@ for row in rows:
 
         # jsonDict[countyID][year][0] += indemnifiedPolicies
         jsonDict[countyID][year][0] += totalPolicies
-        # jsonDict[countyID][year][2] += acres
+        # jsonDict[countyID][year][2] += 3
 
 with open(outpath, "w+") as outfile:
     rows = outfile.readlines()
