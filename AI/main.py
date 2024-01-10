@@ -11,7 +11,7 @@ from hyperas import optim
 from hyperas.distributions import choice, uniform
 from json import load, dump
 from keras.activations import hard_sigmoid, linear, relu, sigmoid
-from keras.optimizers import adam
+from keras.optimizers import Adam
 import matplotlib.pyplot as plt
 
 
@@ -26,7 +26,7 @@ def getData():
         arr[3] = normalize(arr[3])
         return arr.T
 
-    in_path = "/Users/forrestbicker/Documents/Code/Python/WorkInProgress/MTF/data/AI/OUT/MASTER.json"
+    in_path = "AI\DATA\MASTER.json"
 
     with open(in_path, "r") as in_file:
         in_dict = load(in_file)
@@ -80,14 +80,14 @@ def getModel(x_train, y_train, x_val, y_val):
 
     model.compile(
         loss=mean_squared_error,
-        optimizer=adam(10**-3),
+        optimizer=Adam(10**-3),
         metrics=["accuracy"]
     )
 
     history = model.fit(
         x_train,
         y_train,
-        epochs=2500,
+        epochs=15,
         verbose=2,
         validation_data=(x_val, y_val)
     )
@@ -102,10 +102,10 @@ def getModel(x_train, y_train, x_val, y_val):
 
     return(model)
 
-print(getData()[-2])
+# print(getData()[-2])
 
 modle = getModel(*getData())
-out = modle.predict_proba(getData()[-2])
+out = modle.predict_proba(getData()[-2]) # test on validation data
 
 modle.save("m.hdf5")
 
